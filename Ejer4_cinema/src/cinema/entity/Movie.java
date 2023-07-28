@@ -3,6 +3,8 @@
  */
 package cinema.entity;
 
+import java.util.Objects;
+
 /**
  * @author yessa
  */
@@ -65,5 +67,23 @@ public class Movie {
 	@Override
 	public String toString() {
 		return "Movie [title=" + title + ", director=" + director + ", minutes=" + minutes + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(director, minutes, title);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Movie other = (Movie) obj;
+		return Objects.equals(director, other.director) && Objects.equals(minutes, other.minutes)
+				&& Objects.equals(title, other.title);
 	}
 }
