@@ -15,7 +15,7 @@ import cinema.utilities.Comparadores;
  */
 public class MovieService {
 	ArrayList<Movie> movieList;
-	Scanner scan = new Scanner(System.in);
+	Scanner scan = new Scanner(System.in).useDelimiter("\r\n");
 
 	public MovieService() {
 		this.movieList = new ArrayList();
@@ -26,9 +26,8 @@ public class MovieService {
 		System.out.println("Welcome to the cinema");
 		do {
 			System.out.println("Please, select your option\n" + "1. Register movie\n" + "2. Show movies\n"
-					+ "3. Show long movies\n" + "4. Delete movie\n" + "5. Order movies...\n" + "6. Salir");
-			option = scan.nextLine();
-
+					+ "3. Show long movies\n" + "4. Delete movie\n" + "5. Order movies...\n" + "6. Exit");
+			option = scan.next();
 			switch (option) {
 			case "1" -> setMovie();
 			case "2" -> showMovie();
@@ -42,28 +41,27 @@ public class MovieService {
 	}
 
 	public Movie crearMovie() {
-		System.out.println("Ingrese titulo");
-		String title = scan.nextLine();
-		System.out.println("Ingrese director");
-		String director = scan.nextLine();
-		System.out.println("Ingrese duracion en minutos");
+		System.out.println("Enter the movie's title");
+		String title = scan.next();
+		System.out.println("Enter the movie's director");
+		String director = scan.next();
+		System.out.println("Enter the movie's minutes log");
 		int minutes = scan.nextInt();
 		return new Movie(title, director, minutes);
 	}
 
 	public void setMovie() {
 		String select;
-		Movie m = crearMovie();
 		do {
-			movieList.add(m);
+			movieList.add(crearMovie());
 			System.out.println("Quisiera agregar otra pelicula? S/N");
-			select = scan.nextLine();
-			scan.next();
+			select = scan.next();
 		} while (select.equalsIgnoreCase("s"));
 
 	}
 
 	public void showMovie() {
+		System.out.println("");
 		if (movieList.isEmpty()) {
 			System.out.println("There aren't movie registered");
 		} else {
@@ -74,25 +72,40 @@ public class MovieService {
 	}
 
 	public void showMovieLong() {
-
+		System.out.println("");
 		for (int i = 0; i < movieList.size(); i++) {
-			if (movieList.get(i).getMinutes() > 60) {
+			if (movieList.get(i).getMinutes() >= 60) {
 				System.out.println(movieList.get(i));
 			}
 		}
-
 	}
 
 	public void deleteMovie() {
+		System.out.println("");
+		if (movieList.isEmpty()) {
+			System.out.println("There aren't movie to delete");
+		} else {
+			System.out.println("");
+			System.out.println("Enter the movie's name to delete");
+			String name = scan.next();
+			boolean bandera = false;
 
-		System.out.println("Ingrese nombre de la pelicula que desea eliminar");
-		String name = scan.nextLine();
-
+			for (int i = 0; i < movieList.size(); i++) {
+				if (movieList.get(i).getTitle().equalsIgnoreCase(name)) {
+					movieList.remove(i);
+					bandera = true;
+					break;
+				}
+			}
+			if (bandera == false) {
+				System.out.println("Can not find the movie to delete");
+			}
+		}
 	}
 
 	public void orderTimeDesc() {
 		System.out.println("");
-		if (movieList.isEmpty() || movieList.size() <=1) {
+		if (movieList.isEmpty() || movieList.size() <= 1) {
 			System.out.println("There aren't enought movie registered to order");
 		} else {
 			Collections.sort(movieList, Comparadores.OrderByTimeDesc);
@@ -103,7 +116,7 @@ public class MovieService {
 
 	public void orderTimeAsc() {
 		System.out.println("");
-		if (movieList.isEmpty() || movieList.size() <=1) {
+		if (movieList.isEmpty() || movieList.size() <= 1) {
 			System.out.println("There aren't enought movie registered to order");
 		} else {
 			Collections.sort(movieList, Comparadores.OrderByTimeAsc);
@@ -114,24 +127,24 @@ public class MovieService {
 
 	public void orderTitle() {
 		System.out.println("");
-		if (movieList.isEmpty() || movieList.size() <=1) {
+		if (movieList.isEmpty() || movieList.size() <= 1) {
 			System.out.println("There aren't enought movie registered to order");
 		} else {
 			Collections.sort(movieList, Comparadores.OrderByTitle);
 			System.out.println("-----Order by time title-----");
 			showMovie();
-		}		
+		}
 	}
 
 	public void orderDirector() {
 		System.out.println("");
-		if (movieList.isEmpty() || movieList.size() <=1) {
+		if (movieList.isEmpty() || movieList.size() <= 1) {
 			System.out.println("There aren't enought movie registered to order");
 		} else {
 			Collections.sort(movieList, Comparadores.OrderByDirector);
 			System.out.println("-----Order by time director-----");
 			showMovie();
-		}			
+		}
 	}
 
 	public void menuOrder() {
