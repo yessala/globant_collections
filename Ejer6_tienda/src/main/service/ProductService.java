@@ -14,6 +14,25 @@ public class ProductService {
 	static Scanner scan = new Scanner(System.in).useDelimiter("\r\n");
 	private HashMap<String, Double> productList = new HashMap();
 
+	public void menu() {
+		int option;
+		System.out.println("Bienvenido al Sistema de Registro");
+
+		do {
+			System.out.print("Seleccione una opción\n" + "1. Crear nuevo producto\n" + "2. Mostrar lista de productos\n"
+					+ "3. Modificiar precio de producto\n" + "4. Eliminar un producto\n" + "5. Salir\n" + "opcion: ");
+			option = scan.nextInt();
+			switch (option) {
+			case 1 -> addProd();
+			case 2 -> readLis();
+			case 3 -> updatePrice();
+			case 4 -> deleteProd();
+			case 5 -> System.out.println("Hasta luego.");
+			default -> System.out.println("Opción invalida, intente nuevamente.");
+			}
+		} while (option != 5);
+	}
+
 	public Product create() {
 
 		Product p = new Product();
@@ -47,15 +66,17 @@ public class ProductService {
 
 	}
 
-	public void showLis() {
+	public void readLis() {
+		if (productList.isEmpty()) {
+			System.out.println("No hay productos registrados en la lista.");
+		} else {
+			for (Entry<String, Double> list : productList.entrySet()) {
+				String prod = list.getKey();
+				Double prec = list.getValue();
 
-		for (Entry<String, Double> list : productList.entrySet()) {
-			String prod = list.getKey();
-			Double prec = list.getValue();
-
-			System.out.println("Producto: " + prod + ", Precio: $" + prec);
+				System.out.println("Producto: " + prod + ", Precio: $" + prec);
+			}
 		}
-
 	}
 
 	public void updatePrice() {
@@ -76,7 +97,7 @@ public class ProductService {
 					System.out.println("Ingrese el nuevo precio del producto");
 					list.setValue(scan.nextDouble());
 					System.out.println("El precio ha sido actualizado exitosamente.\n" + "Producto : " + list.getKey()
-					+ ", Precio: " + list.getValue());
+							+ ", Precio: " + list.getValue());
 					bandera = true;
 					break;
 				}
@@ -106,7 +127,7 @@ public class ProductService {
 					System.out.println("El producto ha sido eliminado exitosamente.");
 
 					bandera = true;
-					//					break;					
+					break;
 				}
 			}
 			if (!bandera) {
